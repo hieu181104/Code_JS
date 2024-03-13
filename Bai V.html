@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đường đi trong đồ thị</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    #input-area {
+        margin-bottom: 10px;
+    }
+</style>
+</head>
+<body>
+    <h1> PHẦN V: THUẬT TOÁN DFS</h1>
+    <h3> Ví dụ: Cho đơn đồ thị vô hướng gồm n đỉnh, m cạnh, danh sách các cạnh được nhập vào theo dạng (u,v) với u và v là các đỉnh thuộc đồ thị sao cho 1 nhỏ hơn hoặc bằng u, u khác v, nhỏ hơn hoặc bằng n. Hãy đưa ra một đường đi từ đỉnh s đến đỉnh f cho trước </h3>
+<div id="input-area">
+    <label for="edges">Danh sách cạnh (ví dụ: 1-2,2-3,2-4,3-5,4-5): </label>
+    <input type="text" id="edges" placeholder="Nhập danh sách cạnh">
+    <br>
+    <label for="start">Đỉnh bắt đầu: </label>
+    <input type="number" id="start" placeholder="Nhập đỉnh bắt đầu">
+    <br>
+    <label for="end">Đỉnh kết thúc: </label>
+    <input type="number" id="end" placeholder="Nhập đỉnh kết thúc">
+    <br>
+    <button onclick="findPath()">Tìm đường đi</button>
+</div>
+<div id="output"></div>
+
+<script>
+function dfs(graph, start, end, visited=[], path=[]) {
+    visited.push(start);
+    path.push(start);
+    if (start === end) {
+        return path;
+    }
+    if (!graph[start]) {
+        return null;
+    }
+    for (let node of graph[start]) {
+        if (!visited.includes(node)) {
+            let newPath = dfs(graph, node, end, visited.slice(), path.slice());
+            if (newPath) {
+                return newPath;
+            }
+        }
+    }
+    return null;
+}
+
+function edgesToGraph(edges) {
+    let graph = {};
+    for (let edge of edges) {
+        let [u, v] = edge.split('-').map(Number);
+        if (!graph[u]) {
+            graph[u] = [];
+        }
+        if (!graph[v]) {
+            graph[v] = [];
+        }
+        graph[u].push(v);
+        graph[v].push(u);
+    }
+    return graph;
+}
+
+function findPath() {
+    let edgesInput = document.getElementById('edges').value.trim();
+    let start = parseInt(document.getElementById('start').value);
+    let end = parseInt(document.getElementById('end').value);
+
+    let edges = edgesInput.split(',');
+    let graph = edgesToGraph(edges);
+
+    let path = dfs(graph, start, end);
+    let outputDiv = document.getElementById('output');
+    if (path) {
+        outputDiv.innerHTML = "Đường đi từ đỉnh " + start + " đến đỉnh " + end + " là: " + path.join(' -> ');
+    } else {
+        outputDiv.innerHTML = "Không tồn tại đường đi từ đỉnh " + start + " đến đỉnh " + end;
+    }
+}
+</script>
+</body>
+</html>

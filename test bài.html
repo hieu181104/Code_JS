@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kruskal's Algorithm</title>
+    <style>
+        #canvas {
+            border: 1px solid black;
+            margin: 20px;
+            width: 500px;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Kruskal's Algorithm</h2>
+    <canvas id="canvas"></canvas>
+    <br>
+    <button onclick="runKruskal()">Run Kruskal's Algorithm</button>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Đồ thị đầu vào - các cạnh và trọng số tương ứng
+        const edges = [
+            { start: 'A', end: 'B', weight: 4 },
+            { start: 'B', end: 'C', weight: 8 },
+            { start: 'C', end: 'D', weight: 7 },
+            { start: 'D', end: 'E', weight: 9 },
+            { start: 'E', end: 'F', weight: 10 },
+            { start: 'F', end: 'G', weight: 2 },
+            { start: 'G', end: 'H', weight: 1 },
+            { start: 'H', end: 'A', weight: 8 },
+            { start: 'B', end: 'H', weight: 11 },
+            { start: 'C', end: 'I', weight: 2 },
+            { start: 'I', end: 'H', weight: 7 },
+            { start: 'G', end: 'I', weight: 6 },
+            { start: 'C', end: 'F', weight: 4 },
+            { start: 'D', end: 'F', weight: 14 }
+        ];
+
+        function runKruskal() {
+            // Sắp xếp các cạnh theo trọng số
+            edges.sort((a, b) => a.weight - b.weight);
+
+            const parent = {};
+            const result = [];
+
+            function find(node) {
+                if (parent[node] === node) return node;
+                return find(parent[node]);
+            }
+
+            function union(node1, node2) {
+                parent[find(node1)] = find(node2);
+            }
+
+            edges.forEach(edge => {
+                if (!parent[edge.start]) parent[edge.start] = edge.start;
+                if (!parent[edge.end]) parent[edge.end] = edge.end;
+
+                if (find(edge.start) !== find(edge.end)) {
+                    result.push(edge);
+                    union(edge.start, edge.end);
+                }
+            });
+
+            // Vẽ kết quả lên canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            result.forEach(edge => {
+                ctx.beginPath();
+                ctx.moveTo(getX(edge.start), getY(edge.start));
+                ctx.lineTo(getX(edge.end), getY(edge.end));
+                ctx.stroke();
+            });
+
+            // Hiển thị số trên các đỉnh
+            ctx.fillStyle = "black";
+            ctx.font = "14px Arial";
+            for (let i = 0; i < edges.length; i++) {
+                let edge = edges[i];
+                ctx.fillText(edge.start, getX(edge.start) - 5, getY(edge.start) - 10);
+                ctx.fillText(edge.end, getX(edge.end) - 5, getY(edge.end) - 10);
+            }
+        }
+
+        // Hàm này chỉ dành cho mục đích minh họa, bạn có thể thay đổi tùy ý
+        function getX(node) {
+            switch (node) {
+                case 'A': return 50;
+                case 'B': return 150;
+                case 'C': return 250;
+                case 'D': return 350;
+                case 'E': return 450;
+                case 'F': return 450;
+                case 'G': return 350;
+                case 'H': return 250;
+                case 'I': return 150;
+            }
+        }
+
+        // Hàm này chỉ dành cho mục đích minh họa, bạn có thể thay đổi tùy ý
+        function getY(node) {
+            switch (node) {
+                case 'A': return 50;
+                case 'B': return 50;
+                case 'C': return 50;
+                case 'D': return 50;
+                case 'E': return 50;
+                case 'F': return 150;
+                case 'G': return 250;
+                case 'H': return 250;
+                case 'I': return 250;
+            }
+        }
+    </script>
+</body>
+</html>

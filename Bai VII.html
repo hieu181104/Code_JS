@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dijkstra's Algorithm</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  textarea {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+  button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #45a049;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>Dijkstra's Algorithm</h2>
+  <textarea id="graphInput" placeholder="Nhập ma trận trọng số của đồ thị (cách nhau bằng dấu cách hoặc dấu phẩy)"></textarea>
+  <input type="text" id="startNode" placeholder="Nhập đỉnh bắt đầu">
+  <button onclick="runDijkstra()">Run Dijkstra</button>
+  <div id="result"></div>
+</div>
+
+<script>
+function dijkstra(graph, start) {
+    const n = graph.length;
+    const dist = Array(n).fill(Infinity);
+    const visited = Array(n).fill(false);
+    dist[start] = 0;
+
+    for (let i = 0; i < n - 1; i++) {
+        const u = minDistance(dist, visited);
+        visited[u] = true;
+
+        for (let v = 0; v < n; v++) {
+            if (!visited[v] && graph[u][v] && dist[u] + graph[u][v] < dist[v]) {
+                dist[v] = dist[u] + graph[u][v];
+            }
+        }
+    }
+
+    return dist;
+}
+
+function minDistance(dist, visited) {
+    let min = Infinity;
+    let minIndex = -1;
+
+    for (let i = 0; i < dist.length; i++) {
+        if (!visited[i] && dist[i] <= min) {
+            min = dist[i];
+            minIndex = i;
+        }
+    }
+
+    return minIndex;
+}
+
+function runDijkstra() {
+    const graphInput = document.getElementById('graphInput').value.trim();
+    const startNode = parseInt(document.getElementById('startNode').value.trim());
+    const graphRows = graphInput.split(/\s*[\n,]\s*/);
+    const graph = [];
+    for (let row of graphRows) {
+        graph.push(row.split(/\s+/).map(Number));
+    }
+
+    const distances = dijkstra(graph, startNode);
+
+    const resultDiv = document.getElementById('result');
+    resultDiv.innerHTML = '<h3>Khoảng cách ngắn nhất từ đỉnh ' + startNode + ' đến các đỉnh khác:</h3><ul>';
+    for (let i = 0; i < distances.length; i++) {
+        resultDiv.innerHTML += '<li>Đỉnh ' + i + ': ' + distances[i] + '</li>';
+    }
+    resultDiv.innerHTML += '</ul>';
+}
+</script>
+</body>
+</html>

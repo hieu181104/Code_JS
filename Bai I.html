@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài toán đếm</title>
+<style>
+    body {
+            font-family: Times, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        #result {
+            font-size: 20px;
+            margin-top: 30px;
+        }
+    .container {
+        max-width: 400px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-top: 50px;
+        background-color: aqua;
+    }
+    #phimbam_1{
+        margin: 16px 0px ;
+    }
+</style>
+<h1>PHẦN I: BÀI TOÁN ĐẾM </h1>
+<h3>Câu 4: Một công ty gồm 8 nam và 5 nữ Họ muốn chọn một nhóm làm việc gồm 3 nam và 2 nữ. Có bao nhiêu cách để chọn nhóm?</h3>
+</head>
+<body>
+<div class="container">
+    <h1>Chọn nhóm làm việc</h1>
+    <div>
+        <label for="male">Số nam trong công ty:</label>
+        <input type="number" id="male" min="0" value="8">
+    </div>
+    <div>
+        <label for="female">Số nữ trong công ty:</label>
+        <input type="number" id="female" min="0" value="5">
+    </div>
+    <div>
+        <label for="maleNeeded">Số nam cần chọn:</label>
+        <input type="number" id="maleNeeded" min="0" value="3">
+    </div>
+    <div>
+        <label for="femaleNeeded">Số nữ cần chọn:</label>
+        <input type="number" id="femaleNeeded" min="0" value="2">
+    </div>
+    <button id="phimbam_1" onclick="calculate()">Tính toán</button>
+    <p id="result"></p>
+</div>
+
+<script>
+    function factorial(n) {
+        if (n === 0 || n === 1) {
+            return 1;
+        } else {
+            return n * factorial(n - 1);
+        }
+    }
+
+    function combination(n, k) {
+        return factorial(n) / (factorial(k) * factorial(n - k));
+    }
+
+    function calculate() {
+        var males = parseInt(document.getElementById("male").value);
+        var females = parseInt(document.getElementById("female").value);
+        var maleNeeded = parseInt(document.getElementById("maleNeeded").value);
+        var femaleNeeded = parseInt(document.getElementById("femaleNeeded").value);
+
+        var totalWays = combination(males, maleNeeded) * combination(females, femaleNeeded);
+
+        document.getElementById("result").innerHTML = "Số cách để chọn một nhóm làm việc là: " + totalWays;
+    }
+</script>
+</body>
+</html>

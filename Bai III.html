@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liệt kê tập hợp con</title>
+<style>
+      body {
+            font-family: Times, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+
+        #result {
+            font-size: 20px;
+            margin-top: 30px;
+        }
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .container h1 {
+    font-size: 24px;
+  }
+  
+  #result {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+</style>
+</head>
+<h1>PHẦN III: BÀI TOÁN LIỆT KÊ</h1>
+<h3>Liệt kê tất cả các tập hợp con của tập {1, 2, 3} có kích thước từ 0 đến 3.</h3>
+<body>
+<div class="container">
+  <h2>Danh sách tập hợp con của {1, 2, 3}</h2>
+  <div id="result"></div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const set = [1, 2, 3];
+  const subsets = [];
+
+  // Hàm để sinh tất cả các tập hợp con
+  function generateSubsets(set, size) {
+    const subset = [];
+    generate(set, size, 0, subset);
+  }
+
+  function generate(set, size, index, subset) {
+    if (index === set.length) {
+      if (subset.length === size) {
+        subsets.push(subset.slice()); // Thêm một bản sao của tập hợp con vào mảng
+      }
+      return;
+    }
+
+    subset.push(set[index]);
+    generate(set, size, index + 1, subset);
+    subset.pop();
+    generate(set, size, index + 1, subset);
+  }
+
+  // Liệt kê tất cả các tập hợp con từ kích thước 0 đến 3
+  for (let size = 0; size <= set.length; size++) {
+    generateSubsets(set, size);
+  }
+
+  // Hiển thị tập hợp con lên trang HTML
+  const resultDiv = document.getElementById("result");
+  for (const subset of subsets) {
+    resultDiv.innerHTML += "{" + subset.join(", ") + "}<br>";
+  }
+});
+</script>
+</body>
+</html>

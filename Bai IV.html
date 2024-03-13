@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giải bài toán đóng thùng</title>
+</head>
+<body>
+    <h1>PHẦN IV: BÀI TOÁN TỐI ƯU </h1>
+    <h3>Bài toán đóng thùng: Có n đồ vật với trọng lượng là w₁, w₂, ..., wn. Cần tìm cách xếp các đồ vật này vào các cái thùng có cùng dung lượng là b sao cho số thùng cần sử dụng là nhỏ nhất có thể được</h3>
+<div class="container">
+  <h2>Bài toán đóng thùng</h2>
+  <div>
+    <label for="weights">Nhập trọng lượng của các đồ vật (cách nhau bằng dấu phẩy):</label>
+    <input type="text" id="weights" placeholder="Ví dụ: 3, 4, 2, 1">
+  </div>
+  <div>
+    <label for="binSize">Dung lượng của thùng:</label>
+    <input type="number" id="binSize" placeholder="Nhập dung lượng của thùng">
+  </div>
+  <button onclick="findBins()">Tìm cách xếp</button>
+  <div id="result"></div>
+</div>
+<script>
+function findBins() {
+  const weightsInput = document.getElementById("weights").value;
+  const binSize = parseInt(document.getElementById("binSize").value);
+  
+  // Chuyển chuỗi nhập vào thành mảng trọng lượng
+  const weights = weightsInput.split(",").map(Number);
+  
+  // Sắp xếp mảng trọng lượng giảm dần
+  weights.sort((a, b) => b - a);
+
+  const bins = [];
+  let binIndex = 0;
+
+  // Lặp qua từng đồ vật
+  for (const weight of weights) {
+    let added = false;
+    // Lặp qua từng thùng
+    for (const bin of bins) {
+      if (bin + weight <= binSize) {
+        // Thêm đồ vật vào thùng hiện tại
+        bin += weight;
+        bins[binIndex] = bin;
+        added = true;
+        break;
+      }
+    }
+    if (!added) {
+      // Nếu không tìm thấy thùng nào phù hợp, tạo một thùng mới
+      bins.push(weight);
+      binIndex++;
+    }
+  }
+
+  // Hiển thị kết quả
+  const resultDiv = document.getElementById("result");
+  resultDiv.innerHTML = `<p>Số lượng thùng cần sử dụng: ${bins.length}</p>`;
+}
+</script>
+</body>
+</html>
