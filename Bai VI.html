@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom MST Graph Visualization</title>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+<style>
+    #graphVisualization {
+        height: 600px;
+        width: 100%;
+        border: 1px solid lightgray;
+    }
+</style>
+</head>
+<body>
+
+<div id="graphVisualization"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Định nghĩa đỉnh
+    var nodes = new vis.DataSet([
+        {id: 'A', label: 'A'},
+        {id: 'B', label: 'B'},
+        {id: 'C', label: 'C'},
+        {id: 'D', label: 'D'},
+        {id: 'E', label: 'E'},
+        {id: 'F', label: 'F'},
+        {id: 'G', label: 'G'},
+        {id: 'H', label: 'H'},
+        {id: 'K', label: 'K'},
+        {id: 'L', label: 'L'},
+        {id: 'M', label: 'M'}
+    ]);
+
+    // Định nghĩa cạnh
+    var edges = new vis.DataSet([
+        {from: 'K', to: 'A', label: '6', font: {align: 'horizontal'}},
+        {from: 'A', to: 'E', label: '4', font: {align: 'horizontal'}},
+        {from: 'E', to: 'B', label: '4', font: {align: 'horizontal'}},
+        {from: 'B', to: 'C', label: '5', font: {align: 'horizontal'}},
+        {from: 'C', to: 'D', label: '1', font: {align: 'horizontal'}},
+        {from: 'C', to: 'F', label: '2', font: {align: 'horizontal'}},
+        {from: 'D', to: 'G', label: '3', font: {align: 'horizontal'}},
+        {from: 'G', to: 'H', label: '6', font: {align: 'horizontal'}},
+        {from: 'G', to: 'M', label: '5', font: {align: 'horizontal'}},
+        {from: 'M', to: 'L', label: '5', font: {align: 'horizontal'}}
+    ]);
+
+    // Cấu hình và tạo đồ thị
+    var container = document.getElementById('graphVisualization');
+    var data = {
+        nodes: nodes,
+        edges: edges
+    };
+    var options = {
+        edges: {
+            smooth: {
+                type: 'continuous'
+            }
+        },
+        layout: {
+            improvedLayout: true
+        },
+        physics: {
+            enabled: false // Tắt vật lý để đồ thị không di chuyển sau khi được vẽ
+        }
+    };
+    var network = new vis.Network(container, data, options);
+});
+</script>
+</body>
+</html>
